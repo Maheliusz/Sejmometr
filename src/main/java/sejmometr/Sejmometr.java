@@ -60,7 +60,7 @@ public class Sejmometr {
             JSONObject data = jsonObject.getJSONObject("data");
             if(data.getString("ludzie.nazwa").equals(name)) return jsonObject;
         }
-        System.out.println("Brak posla o takim imieniu i/lub nazwisku");
+        //System.out.println("Brak posla o takim imieniu i/lub nazwisku");
         return null;
     }
 }
