@@ -6,14 +6,12 @@ import java.security.InvalidParameterException;
  * Created by Michał Zakrzewski on 2017-01-06.
  */
 public class ArgumentParser {
-    private String args[];
     private int kadencja;
     private boolean[] runFunctions;
     private String firstArgs;
     private String secondArgs;
 
     public ArgumentParser(String args[]) throws IndexOutOfBoundsException {
-        this.args = args;
         runFunctions = new boolean[7];
         for (int i = 0; i < runFunctions.length; i++) runFunctions[i] = false;
         kadencja = 0;

@@ -23,7 +23,7 @@ public class Sejmometr {
         count=dataGetter.getCount
                 ("https://api-v3.mojepanstwo.pl/dane/poslowie.json?_type=objects&conditions[poslowie.kadencja]="+kadencja);
     }
-    public void setIDs() throws JSONException {
+    private void setIDs() throws JSONException {
         String url = "https://api-v3.mojepanstwo.pl/dane/poslowie.json?_type=objects&conditions[poslowie.kadencja]="+kadencja+"&page=";
         int max=0;
         if(kadencja==7) max=11;
@@ -34,12 +34,7 @@ public class Sejmometr {
         }
     }
     public int getCount(){ return count; }
-    public void setPoslowie(int iterator){
-        for(int i=iterator; i<=count || i<iterator+50; i++){
-            poslowie.add(dataGetter.getJSON(ids.get(i)));
-        }
-    }
-    public void setPosel(int index){
+    private void setPosel(int index){
         poslowie.add(dataGetter.getJSON(ids.get(index)));
     }
     public void setPoslowie() throws JSONException {
@@ -49,7 +44,6 @@ public class Sejmometr {
             setPosel(i);
         }
         System.out.println();
-        return;
     }
     public JSONObject getPosel(int index){
         return poslowie.get(index);

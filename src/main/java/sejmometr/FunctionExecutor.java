@@ -39,7 +39,7 @@ public class FunctionExecutor {
         return res;
     }
 
-    public void functionOne() throws JSONException {
+    private void functionOne() throws JSONException {
         double res = 0;
         String name = argumentParser.getFirstArgs();
         JSONObject jsonObject = sejmometr.getPoselbyName(name);
@@ -51,7 +51,7 @@ public class FunctionExecutor {
         System.out.println("Suma wydatkow [" + name + "]: " + res);
     }
 
-    public void functionTwo() throws JSONException {
+    private void functionTwo() throws JSONException {
         double res = 0;
         String name = argumentParser.getSecondArgs();
         JSONObject jsonObject = sejmometr.getPoselbyName(name);
@@ -80,7 +80,7 @@ public class FunctionExecutor {
                 + name + ": " + res);
     }
 
-    public void functionThree() throws JSONException {
+    private void functionThree() throws JSONException {
         double res = 0;
         for (int i = 0; i < sejmometr.getCount(); i++) {
             res += sumOfExpenses(sejmometr.getPosel(i));
@@ -89,7 +89,7 @@ public class FunctionExecutor {
         System.out.println("Srednia suma wydatkow wszystkich poslow: " + res);
     }
 
-    public void functionFour() throws JSONException {
+    private void functionFour() throws JSONException {
         int max = 0;
         JSONObject maxPosel = new JSONObject();
         for (int i = 0; i < sejmometr.getCount(); i++) {
@@ -103,7 +103,7 @@ public class FunctionExecutor {
                 + maxPosel.getJSONObject("data").getString("ludzie.nazwa"));
     }
 
-    public void functionFive() throws JSONException {
+    private void functionFive() throws JSONException {
         int max = 0;
         JSONObject maxPosel = new JSONObject();
         for (int i = 0; i < sejmometr.getCount(); i++) {
@@ -122,7 +122,7 @@ public class FunctionExecutor {
                 + maxPosel.getJSONObject("data").getString("ludzie.nazwa"));
     }
 
-    public void functionSix() throws JSONException {
+    private void functionSix() throws JSONException {
         double max = 0;
         JSONObject maxPosel = new JSONObject();
         for (int i = 0; i < sejmometr.getCount(); i++) {
@@ -141,7 +141,7 @@ public class FunctionExecutor {
                 + maxPosel.getJSONObject("data").getString("ludzie.nazwa"));
     }
 
-    public void functionSeven() throws JSONException {
+    private void functionSeven() throws JSONException {
         JSONArray res = new JSONArray();
         for (int i = 0; i < sejmometr.getCount(); i++) {
             if (sejmometr.getPosel(i).getJSONObject("layers").get("wyjazdy") instanceof JSONObject) continue;
