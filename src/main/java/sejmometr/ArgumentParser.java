@@ -1,6 +1,8 @@
 package sejmometr;
 
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Michał Zakrzewski on 2017-01-06.
@@ -8,11 +10,13 @@ import java.security.InvalidParameterException;
 public class ArgumentParser {
     private int kadencja;
     private boolean[] runFunctions;
-    private String firstArgs;
-    private String secondArgs;
+    private List<String > firstArgs;
+    private List<String >secondArgs;
 
     public ArgumentParser(String args[]) throws IndexOutOfBoundsException {
         runFunctions = new boolean[7];
+        firstArgs = new LinkedList<>();
+        secondArgs = new LinkedList<>();
         for (int i = 0; i < runFunctions.length; i++) runFunctions[i] = false;
         kadencja = 0;
         for (int i = 0; i < args.length; i++) {
@@ -23,7 +27,7 @@ public class ArgumentParser {
                 } catch (IndexOutOfBoundsException e) {
                     throw new IndexOutOfBoundsException("Brak Imienia i/lub Nazwiska dla Funkcji 1!");
                 } finally {
-                    this.firstArgs = firstArgs;
+                    this.firstArgs.add(firstArgs);
                 }
                 if (!firstArgs.equals("")) runFunctions[0] = true;
             }
@@ -34,7 +38,7 @@ public class ArgumentParser {
                 } catch (IndexOutOfBoundsException e) {
                     throw new IndexOutOfBoundsException("Brak Imienia i/lub Nazwiska dla Funkcji 2!");
                 } finally {
-                    this.secondArgs = secondArgs;
+                    this.secondArgs.add(secondArgs);
                 }
                 if (!secondArgs.equals("")) runFunctions[1] = true;
             }
@@ -59,11 +63,11 @@ public class ArgumentParser {
         return kadencja;
     }
 
-    public String getFirstArgs() {
+    public List<String> getFirstArgs() {
         return firstArgs;
     }
 
-    public String getSecondArgs() {
+    public List<String> getSecondArgs() {
         return secondArgs;
     }
 

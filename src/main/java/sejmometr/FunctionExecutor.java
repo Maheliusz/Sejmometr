@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by Michał Zakrzewski on 2017-01-09.
  */
@@ -41,43 +43,48 @@ public class FunctionExecutor {
 
     private void functionOne() throws JSONException {
         double res = 0;
-        String name = argumentParser.getFirstArgs();
-        JSONObject jsonObject = sejmometr.getPoselbyName(name);
-        if (jsonObject == null) {
-            System.out.println("Funkcja 1: brak posla(nki) [" + name + "]");
-            return;
+        List<String> firstArgs = argumentParser.getFirstArgs();
+        for(String name : firstArgs) {
+            //String name = argumentParser.getFirstArgs();
+            JSONObject jsonObject = sejmometr.getPoselbyName(name);
+            if (jsonObject == null) {
+                System.out.println("Funkcja 1: brak posla(nki) [" + name + "]");
+                return;
+            }
+            res = sumOfExpenses(jsonObject);
+            System.out.println("Suma wydatkow [" + name + "]: " + res);
         }
-        res = sumOfExpenses(jsonObject);
-        System.out.println("Suma wydatkow [" + name + "]: " + res);
     }
 
     private void functionTwo() throws JSONException {
         double res = 0;
-        String name = argumentParser.getSecondArgs();
-        JSONObject jsonObject = sejmometr.getPoselbyName(name);
-        if (jsonObject == null) {
-            System.out.println("Funkcja 2: brak posla(nki) [" + name + "]");
-            return;
-        }
-        int numer = 0;
-        JSONObject wydatki = jsonObject.getJSONObject("layers").getJSONObject("wydatki");
-        for (int i = 0; i < wydatki.getJSONArray("punkty").length(); i++) {
-            if (wydatki.getJSONArray("punkty").getJSONObject(i).getString("tytul")
-                    .equals("Koszty drobnych napraw i remontów lokalu biura poselskiego")) {
-                numer = wydatki.getJSONArray("punkty").getJSONObject(i).getInt("numer");
+        List<String> secondArgs = argumentParser.getSecondArgs();
+        for(String name : secondArgs) {
+            JSONObject jsonObject = sejmometr.getPoselbyName(name);
+            if (jsonObject == null) {
+                System.out.println("Funkcja 2: brak posla(nki) [" + name + "]");
+                return;
             }
+            int numer = 0;
+            JSONObject wydatki = jsonObject.getJSONObject("layers").getJSONObject("wydatki");
+            for (int i = 0; i < wydatki.getJSONArray("punkty").length(); i++) {
+                if (wydatki.getJSONArray("punkty").getJSONObject(i).getString("tytul")
+                        .equals("Koszty drobnych napraw i remontów lokalu biura poselskiego")) {
+                    numer = wydatki.getJSONArray("punkty").getJSONObject(i).getInt("numer");
+                }
+            }
+            if (numer == 0) {
+                System.out.println
+                        ("Funkcja 2: brak kosztow drobnych napraw i remontow lokalu biura poselskiego posla(nki) " + name);
+                return;
+            }
+            JSONArray roczniki = wydatki.getJSONArray("roczniki");
+            for (int i = 0; i < roczniki.length(); i++) {
+                res += roczniki.getJSONObject(i).getJSONArray("pola").getDouble(numer - 1);
+            }
+            System.out.println("Wysokosc wydatkow na na 'drobne naprawy i remonty biura poselskiego' posla(nki) "
+                    + name + ": " + res);
         }
-        if (numer == 0) {
-            System.out.println
-                    ("Funkcja 2: brak kosztow drobnych napraw i remontow lokalu biura poselskiego posla(nki) " + name);
-            return;
-        }
-        JSONArray roczniki = wydatki.getJSONArray("roczniki");
-        for (int i = 0; i < roczniki.length(); i++) {
-            res += roczniki.getJSONObject(i).getJSONArray("pola").getDouble(numer - 1);
-        }
-        System.out.println("Wysokosc wydatkow na na 'drobne naprawy i remonty biura poselskiego' posla(nki) "
-                + name + ": " + res);
     }
 
     private void functionThree() throws JSONException {

@@ -15,44 +15,53 @@ public class Sejmometr {
     private List<JSONObject> poslowie;
     private int count;
     private int kadencja;
-    public  Sejmometr(int kadencja){
+
+    public Sejmometr(int kadencja) {
         dataGetter = new DataGetter();
         poslowie = new LinkedList<>();
         ids = new LinkedList<>();
-        this.kadencja=kadencja;
-        count=dataGetter.getCount
-                ("https://api-v3.mojepanstwo.pl/dane/poslowie.json?_type=objects&conditions[poslowie.kadencja]="+kadencja);
+        this.kadencja = kadencja;
+        count = dataGetter.getCount
+                ("https://api-v3.mojepanstwo.pl/dane/poslowie.json?_type=objects&conditions[poslowie.kadencja]=" + kadencja);
     }
+
     private void setIDs() throws JSONException {
-        String url = "https://api-v3.mojepanstwo.pl/dane/poslowie.json?_type=objects&conditions[poslowie.kadencja]="+kadencja+"&page=";
-        int max=0;
-        if(kadencja==7) max=11;
-        else max=10;
-        for(int i=1; i<=max; i++){
-            String newUrl = url+i;
+        String url = "https://api-v3.mojepanstwo.pl/dane/poslowie.json?_type=objects&conditions[poslowie.kadencja]=" + kadencja + "&page=";
+        int max = 0;
+        if (kadencja == 7) max = 11;
+        else max = 10;
+        for (int i = 1; i <= max; i++) {
+            String newUrl = url + i;
             ids.addAll(dataGetter.getIDsFromUrl(newUrl));
         }
     }
-    public int getCount(){ return count; }
-    private void setPosel(int index){
+
+    public int getCount() {
+        return count;
+    }
+
+    private void setPosel(int index) {
         poslowie.add(dataGetter.getJSON(ids.get(index)));
     }
-    public void setPoslowie() throws JSONException {
+
+    public void setPoslowie() throws JSONException{
         setIDs();
-        for(int i=0; i<getCount(); i++){
-            System.out.print("\rPosel "+(i+1)+"\\"+getCount());
+        for (int i = 0; i < getCount(); i++) {
+            System.out.print("\rPosel " + (i + 1) + "\\" + getCount());
             setPosel(i);
         }
         System.out.println();
     }
-    public JSONObject getPosel(int index){
+
+
+    public JSONObject getPosel(int index) {
         return poslowie.get(index);
     }
 
     public JSONObject getPoselbyName(String name) throws JSONException {
-        for(JSONObject jsonObject : poslowie){
+        for (JSONObject jsonObject : poslowie) {
             JSONObject data = jsonObject.getJSONObject("data");
-            if(data.getString("ludzie.nazwa").equals(name)) return jsonObject;
+            if (data.getString("ludzie.nazwa").equals(name)) return jsonObject;
         }
         //System.out.println("Brak posla o takim imieniu i/lub nazwisku");
         return null;
