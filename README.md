@@ -10,3 +10,5 @@
 - **-5** - wywołuje funkcję 5. ("poseł/posłanka, który najdłużej przebywał za granicą")
 - **-6** - wywołuje funkcję 6. ("poseł/posłanka, który odbył najdroższą podróż zagraniczną")
 - **-7** - wywołuje funkcję 7. ("lista wszystkich posłów, którzy odwiedzili Włochy")
+
+Funkcje 1 i 2 mogą zostać wywołane więcej niż 1 raz. 
